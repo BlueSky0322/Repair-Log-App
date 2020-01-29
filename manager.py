@@ -15,33 +15,44 @@ def add_item():
     db.insert(class_text.get(), classno_text.get(), date_text.get(), time_text.get(), details_text.get())
     details_list.delete(0, END)
     details_list.insert(END, (class_text.get(), classno_text.get(), date_text.get(), time_text.get(), details_text.get()))
+    clear_text()
     populate_list()
 
 def select_item(event):
-    global selected_item
-    index = details_list.curselection()[0]
-    selected_item = details_list.get(index)
+    try:
+        global selected_item
+        index = details_list.curselection()[0]
+        selected_item = details_list.get(index)
     
-    entry_class.delete(0, END)
-    entry_class.insert(END, selected_item[1])
-    entry_classno.delete(0, END)
-    entry_classno.insert(END, selected_item[2])
-    entry_date.delete(0, END)
-    entry_date.insert(END, selected_item[3])
-    entry_time.delete(0, END)
-    entry_time.insert(END, selected_item[4])
-    entry_details.delete(0, END)
-    entry_details.insert(END, selected_item[5])
+        entry_class.delete(0, END)
+        entry_class.insert(END, selected_item[1])
+        entry_classno.delete(0, END)
+        entry_classno.insert(END, selected_item[2])
+        entry_date.delete(0, END)
+        entry_date.insert(END, selected_item[3])
+        entry_time.delete(0, END)
+        entry_time.insert(END, selected_item[4])
+        entry_details.delete(0, END)
+        entry_details.insert(END, selected_item[5])
+    except IndexError:
+        pass
 
 def remove_item():
     db.remove(selected_item[0])
+    clear_text()
     populate_list()
-    
+
 def update_item():
-    print("update") 
+    db.update(selected_item[0], class_text.get(), classno_text.get(), date_text.get(), time_text.get(), details_text.get())
+    populate_list()
 
 def clear_text():
-    print("Clear")
+    entry_class.delete(0, END)
+    entry_classno.delete(0, END)
+    entry_date.delete(0, END)
+    entry_time.delete(0, END)
+    entry_details.delete(0, END)
+
 
 app = Tk()
 
